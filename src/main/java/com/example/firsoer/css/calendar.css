@@ -1,0 +1,61 @@
+.button {
+    -fx-background-radius: 0px;
+}
+
+.button:hover {
+    -fx-border-color: #FF0000;
+    -fx-border-width: 2px;
+}
+
+.tooltip {
+    -fx-font-size: 12px;
+    -fx-text-alignment: center;
+}
+
+.weekNumber {
+    -fx-border-width: 0px 0px 2px 0px;
+    -fx-border-color: #000000;
+}
+
+.rowOdd {
+    -fx-border-width: 0px 0px 1px 1px;
+    -fx-border-color: #000000;
+    -fx-background-color: rgba(47, 50, 47, 0.43);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,1), 2, 0, 0, 0);
+}
+
+.rowEven {
+    -fx-border-width: 0px 0px 1px 1px;
+    -fx-border-color: #000000;
+    -fx-background-color: rgba(167, 169, 167, 0.43);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,1), 2, 0, 0, 0);
+}
+
+.weekDay {
+    -fx-border-width: 0px 0px 2px 1px;
+    -fx-border-color: #000000;
+    -fx-background-color: rgba(159, 159, 159, 0.65);
+}
+
+.rowOddTime {
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-color: #000000;
+    -fx-background-color: rgba(47, 50, 47, 0.43);
+}
+
+.rowEvenTime {
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-color: #000000;
+    -fx-background-color: rgba(167, 169, 167, 0.43);
+}
+
+.appointmentCalendar {
+    -fx-border-width: 0px 1px 1px 1px;
+    -fx-border-color: #000000;
+    -fx-background-color: lightgray;
+}
+
+.appointmentCalendar:hover {
+    -fx-border-width: 2px;
+    -fx-border-color: red;
+}
