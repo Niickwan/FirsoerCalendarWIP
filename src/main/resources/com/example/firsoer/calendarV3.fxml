@@ -104,13 +104,6 @@
             <RowConstraints minHeight="17.0" prefHeight="17.0" vgrow="SOMETIMES" />
           </rowConstraints>
             <children>
-                <!-- ROW 0 (WeekDays) -->
-                <Label alignment="CENTER" prefHeight="500.0" prefWidth="500.0" styleClass="weekDay" text="Mandag d. 4/4" GridPane.columnIndex="1" GridPane.columnSpan="4" />
-                <Label alignment="CENTER" layoutX="110.0" layoutY="10.0" prefHeight="500.0" prefWidth="500.0" styleClass="weekDay" text="Tirsdag d. 5/4" GridPane.columnIndex="5" GridPane.columnSpan="4" />
-                <Label alignment="CENTER" layoutX="250.0" layoutY="10.0" prefHeight="500.0" prefWidth="500.0" styleClass="weekDay" text="Onsdag d. 6/4" GridPane.columnIndex="9" GridPane.columnSpan="4" />
-                <Label alignment="CENTER" layoutX="390.0" layoutY="10.0" prefHeight="500.0" prefWidth="500.0" styleClass="weekDay" text="Torsdag d. 7/4" GridPane.columnIndex="13" GridPane.columnSpan="4" />
-                <Label alignment="CENTER" layoutX="530.0" layoutY="10.0" prefHeight="500.0" prefWidth="500.0" styleClass="weekDay" text="Fredag d. 8/4" GridPane.columnIndex="17" GridPane.columnSpan="4" />
-
                 <!-- ROW 0 (WeekNumber) -->
                 <Label fx:id="weekNumber" alignment="CENTER" prefHeight="500.0" prefWidth="500.0" styleClass="weekNumber" text="Uge 14" textAlignment="CENTER" />
 

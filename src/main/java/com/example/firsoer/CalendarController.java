@@ -6,15 +6,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class CalendarController {
     @FXML
@@ -36,6 +33,12 @@ public class CalendarController {
     private ArrayList<Booking> bookings = new ArrayList<>();
 
     private ArrayList<Pane> paneHolder = new ArrayList<>();
+    private ArrayList<Label> weekDaysLabels = new ArrayList<>();
+
+    private String[] longWeekDays = {"Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"};
+    private String[] shortWeekDays = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    private final int FIRSTDAYOFWEEK = 0;
+
 
     public void loadDatabase() {
         Pane p = new Pane();
@@ -53,38 +56,64 @@ public class CalendarController {
         calendarGrid.getChildren().remove(paneHolder.get(0));
     }
 
-    public void doThat() throws ParseException {
-        //db.testUpdateDate();
-        String input = "20220408";
-        SimpleDateFormat df = new SimpleDateFormat(format);
-        Date date = df.parse(input);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        weekNumber.setText(Integer.toString(cal.get(Calendar.WEEK_OF_YEAR)));
-        cal.clear();
-        cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
-        System.out.println(Calendar.getInstance().getTimeInMillis());
-        while (cal.get(Calendar.DAY_OF_WEEK) > cal.getFirstDayOfWeek()) {
-            cal.add(Calendar.DATE, -1); // Substract 1 day until first day of week.
-        }
-        long firstDayOfWeekTimestamp = cal.getTimeInMillis();
-        Instant instant = Instant.ofEpochMilli ( firstDayOfWeekTimestamp );
-        System.out.println(instant);
+    public void doThat() {
+
     }
 
     public void initialize() throws ParseException {
-        // Get weekNumber based on date
-        // https://java.tutorialink.com/java-get-week-number-from-any-date/
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        Date date = sdf.parse(LocalDate.now().toString().replaceAll("[^a-zA-Z0-9]", ""));
-        cal.setTime(date);
-        weekNumber.setText(Integer.toString(cal.get(Calendar.WEEK_OF_YEAR)));
-        generateLabelsForWorkingHours();
-        generateBackgroundAndPaneFields();
         this.bookings = db.getCalendarForNumberOfWeeks(1);
         for (int i = 0; i < this.bookings.size(); i++) {
             System.out.println(this.bookings.get(i));
             setAppointmentsForCurrentWeek(this.bookings.get(i));
+        }
+        generateLabelsForWeekDays();
+        updateLabelsForWeekDaysAndWeekNumber(0); // Show current week
+        generateLabelsForWorkingHours();
+        generateBackgroundAndPaneFields();
+    }
+
+    // sættes int til +/-7, 14, 21 osv... indlæses den pågældende uge.
+    private void updateLabelsForWeekDaysAndWeekNumber(int showWeekBasedOnCurrentDate) throws ParseException {
+//        System.out.println(LocalDate.now()); // yyyy-MM-dd
+//        System.out.println(LocalTime.now().toString()); // hh:mm:ss
+//        System.out.println(Calendar.getInstance().getTime()); // Sat Apr 09 23:27:01 CEST 2022
+        LocalDate date = LocalDate.parse(LocalDate.now().toString());
+        date = date.plusDays(showWeekBasedOnCurrentDate);
+        int firstDayInWeek = 0;
+        for (int i = 0; i < shortWeekDays.length; i++) {
+            if (Calendar.getInstance().getTime().toString().substring(0, 3).equalsIgnoreCase(shortWeekDays[i])) firstDayInWeek = i;
+        }
+        for (int i = 0; i < weekDaysLabels.size(); i++) {
+            weekDaysLabels.get(i).setText(longWeekDays[i] + " d. " +
+                        date.minusDays(firstDayInWeek-i).toString().substring(8, 10).replaceFirst("^0+(?!$)", "") +
+                        "/" + date.minusDays(firstDayInWeek-i).toString().substring(5, 7).replaceFirst("^0+(?!$)", ""));
+        }
+        updateWeekNumber(showWeekBasedOnCurrentDate);
+    }
+
+    private void updateWeekNumber(int showWeekBasedOnCurrentDate) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date date = sdf.parse(LocalDate.now().plusDays(showWeekBasedOnCurrentDate).toString().replaceAll("[^a-zA-Z0-9]", ""));
+        cal.setTime(date);
+        weekNumber.setText(Integer.toString(cal.get(Calendar.WEEK_OF_YEAR)));
+    }
+
+    private void generateLabelsForWeekDays() {
+        int incXPos = 0;
+        int columnNumber = 1;
+        for (int i = 0; i < workDays; i++) {
+            Label l = new Label();
+            l.setAlignment(Pos.CENTER);
+            l.setLayoutX(110+incXPos);
+            l.setLayoutY(10);
+            l.setPrefHeight(500);
+            l.setPrefWidth(500);
+            l.getStyleClass().add("weekDay");
+            // i = width / i1 = Height / i2 = Width in grid / i3 = Height in grid
+            calendarGrid.add(l,columnNumber, 0, 4, 1);
+            weekDaysLabels.add(l);
+            incXPos += 140;
+            columnNumber += 4;
         }
     }
 
